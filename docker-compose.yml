@@ -1,0 +1,35 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: turnover_db
+      POSTGRES_USER: turnover
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-turnover-dev-password}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U turnover -d turnover_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/create_db.sql:/docker-entrypoint-initdb.d/01-create-db.sql:ro
+
+  api:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      ENVIRONMENT: dev
+      PORT: 8000
+      DATABASE_URL: postgresql://turnover:${POSTGRES_PASSWORD:-turnover-dev-password}@db:5432/turnover_db
+      DATABASE_ECHO: "false"
+      API_KEY: ${API_KEY:-}
+      CORS_ORIGINS: http://localhost:3000,http://localhost:8000
+    ports:
+      - "8000:8000"
+
+volumes:
+  postgres_data:
