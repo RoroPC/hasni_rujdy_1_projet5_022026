@@ -2,7 +2,7 @@
   "model_info": {
     "model_file": "best_model_v2.pkl",
     "scaler_file": "scaler.pkl",
-    "threshold": 0.4873,
+    "threshold": 0.36,
     "description": "Modèle de prédiction du turnover - TechNova Partners (34 features avec feature engineering)",
     "version": "2.0",
     "created_date": "2026-02-07",

@@ -1,0 +1,4 @@
+age,statut_marital,ayant_enfants,distance_domicile_travail,departement,poste,niveau_hierarchique_poste,revenu_mensuel,heure_supplementaires,annee_experience_totale,annees_dans_le_poste_actuel,annees_dans_l_entreprise,annes_sous_responsable_actuel,nombre_experiences_precedentes,annees_depuis_la_derniere_promotion,nb_formations_suivies,note_evaluation_precedente,nombre_participation_pee,satisfaction_employee_nature_travail,satisfaction_employee_environnement,satisfaction_employee_equilibre_pro_perso,satisfaction_employee_equipe
+35,Marie(e),Oui,10,Consulting,Consultant,2,5000,Oui,10,3,5,2,2,1,2,3,1,3,3,3,3
+25,Celibataire,Non,25,Developpement,Developpeur,1,2800,Oui,3,1,2,1,1,2,1,2,0,2,2,2,2
+52,Divorce(e),Oui,6,Ressources Humaines,Ressources Humaines,3,7800,Non,28,8,12,4,4,5,3,4,4,4,3,3,4
