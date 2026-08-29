@@ -1,0 +1,353 @@
+{
+  "model_info": {
+    "model_file": "best_model_v2.pkl",
+    "scaler_file": "scaler.pkl",
+    "threshold": 0.4873,
+    "description": "Modèle de prédiction du turnover - TechNova Partners (34 features avec feature engineering)",
+    "version": "2.0",
+    "created_date": "2026-02-07",
+    "features_count": 34
+  },
+  "features": [
+    {
+      "name": "heure_supplementaires",
+      "dtype": "int64",
+      "position": 0,
+      "type": "numeric",
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.28,
+      "std": 0.45
+    },
+    {
+      "name": "annee_experience_totale",
+      "dtype": "int64",
+      "position": 1,
+      "type": "numeric",
+      "min": 0.0,
+      "max": 40.0,
+      "mean": 11.28,
+      "std": 7.78
+    },
+    {
+      "name": "niveau_hierarchique_poste",
+      "dtype": "int64",
+      "position": 2,
+      "type": "numeric",
+      "min": 1.0,
+      "max": 5.0,
+      "mean": 2.06,
+      "std": 1.11
+    },
+    {
+      "name": "annees_dans_le_poste_actuel",
+      "dtype": "int64",
+      "position": 3,
+      "type": "numeric",
+      "min": 0.0,
+      "max": 18.0,
+      "mean": 4.23,
+      "std": 3.62
+    },
+    {
+      "name": "revenu_mensuel",
+      "dtype": "int64",
+      "position": 4,
+      "type": "numeric",
+      "min": 1009.0,
+      "max": 19999.0,
+      "mean": 6502.93,
+      "std": 4707.96
+    },
+    {
+      "name": "age",
+      "dtype": "int64",
+      "position": 5,
+      "type": "numeric",
+      "min": 18.0,
+      "max": 60.0,
+      "mean": 36.92,
+      "std": 9.14
+    },
+    {
+      "name": "annes_sous_responsable_actuel",
+      "dtype": "int64",
+      "position": 6,
+      "type": "numeric",
+      "min": 0.0,
+      "max": 17.0,
+      "mean": 4.12,
+      "std": 3.57
+    },
+    {
+      "name": "nombre_participation_pee",
+      "dtype": "int64",
+      "position": 7,
+      "type": "numeric",
+      "min": 0.0,
+      "max": 3.0,
+      "mean": 0.79,
+      "std": 0.85
+    },
+    {
+      "name": "annees_dans_l_entreprise",
+      "dtype": "int64",
+      "position": 8,
+      "type": "numeric",
+      "min": 0.0,
+      "max": 40.0,
+      "mean": 7.01,
+      "std": 6.13
+    },
+    {
+      "name": "note_evaluation_precedente",
+      "dtype": "int64",
+      "position": 9,
+      "type": "numeric",
+      "min": 1.0,
+      "max": 4.0,
+      "mean": 2.73,
+      "std": 0.71
+    },
+    {
+      "name": "satisfaction_employee_nature_travail",
+      "dtype": "int64",
+      "position": 10,
+      "type": "numeric",
+      "min": 1.0,
+      "max": 4.0,
+      "mean": 2.73,
+      "std": 1.1
+    },
+    {
+      "name": "satisfaction_employee_environnement",
+      "dtype": "int64",
+      "position": 11,
+      "type": "numeric",
+      "min": 1.0,
+      "max": 4.0,
+      "mean": 2.72,
+      "std": 1.09
+    },
+    {
+      "name": "distance_domicile_travail",
+      "dtype": "int64",
+      "position": 12,
+      "type": "numeric",
+      "min": 1.0,
+      "max": 29.0,
+      "mean": 9.19,
+      "std": 8.11
+    },
+    {
+      "name": "satisfaction_employee_equilibre_pro_perso",
+      "dtype": "int64",
+      "position": 13,
+      "type": "numeric",
+      "min": 1.0,
+      "max": 4.0,
+      "mean": 2.76,
+      "std": 0.71
+    },
+    {
+      "name": "nb_formations_suivies",
+      "dtype": "int64",
+      "position": 14,
+      "type": "numeric",
+      "min": 0.0,
+      "max": 6.0,
+      "mean": 2.8,
+      "std": 1.29
+    },
+    {
+      "name": "satisfaction_employee_equipe",
+      "dtype": "int64",
+      "position": 15,
+      "type": "numeric",
+      "min": 1.0,
+      "max": 4.0,
+      "mean": 2.71,
+      "std": 1.08
+    },
+    {
+      "name": "nombre_experiences_precedentes",
+      "dtype": "int64",
+      "position": 16,
+      "type": "numeric",
+      "min": 0.0,
+      "max": 9.0,
+      "mean": 2.69,
+      "std": 2.5
+    },
+    {
+      "name": "annees_depuis_la_derniere_promotion",
+      "dtype": "int64",
+      "position": 17,
+      "type": "numeric",
+      "min": 0.0,
+      "max": 15.0,
+      "mean": 2.19,
+      "std": 3.22
+    },
+    {
+      "name": "statut_marital_Divorcé(e)",
+      "dtype": "bool",
+      "position": 18,
+      "type": "binary",
+      "values": [
+        0,
+        1
+      ]
+    },
+    {
+      "name": "statut_marital_Marié(e)",
+      "dtype": "bool",
+      "position": 19,
+      "type": "binary",
+      "values": [
+        0,
+        1
+      ]
+    },
+    {
+      "name": "departement_Consulting",
+      "dtype": "bool",
+      "position": 20,
+      "type": "binary",
+      "values": [
+        0,
+        1
+      ]
+    },
+    {
+      "name": "departement_Ressources Humaines",
+      "dtype": "bool",
+      "position": 21,
+      "type": "binary",
+      "values": [
+        0,
+        1
+      ]
+    },
+    {
+      "name": "poste_Cadre Commercial",
+      "dtype": "bool",
+      "position": 22,
+      "type": "binary",
+      "values": [
+        0,
+        1
+      ]
+    },
+    {
+      "name": "poste_Consultant",
+      "dtype": "bool",
+      "position": 23,
+      "type": "binary",
+      "values": [
+        0,
+        1
+      ]
+    },
+    {
+      "name": "poste_Directeur Technique",
+      "dtype": "bool",
+      "position": 24,
+      "type": "binary",
+      "values": [
+        0,
+        1
+      ]
+    },
+    {
+      "name": "poste_Manager",
+      "dtype": "bool",
+      "position": 25,
+      "type": "binary",
+      "values": [
+        0,
+        1
+      ]
+    },
+    {
+      "name": "poste_Représentant Commercial",
+      "dtype": "bool",
+      "position": 26,
+      "type": "binary",
+      "values": [
+        0,
+        1
+      ]
+    },
+    {
+      "name": "poste_Ressources Humaines",
+      "dtype": "bool",
+      "position": 27,
+      "type": "binary",
+      "values": [
+        0,
+        1
+      ]
+    },
+    {
+      "name": "poste_Senior Manager",
+      "dtype": "bool",
+      "position": 28,
+      "type": "binary",
+      "values": [
+        0,
+        1
+      ]
+    },
+    {
+      "name": "poste_Tech Lead",
+      "dtype": "bool",
+      "position": 29,
+      "type": "binary",
+      "values": [
+        0,
+        1
+      ]
+    },
+    {
+      "name": "salaire_par_age",
+      "dtype": "float64",
+      "position": 30,
+      "type": "numeric",
+      "min": 34.87096774193548,
+      "max": 537.4666666666667,
+      "mean": 166.31,
+      "std": 99.5
+    },
+    {
+      "name": "stagnation_poste",
+      "dtype": "float64",
+      "position": 31,
+      "type": "numeric",
+      "min": 0.0,
+      "max": 0.8823529411764706,
+      "mean": 0.48,
+      "std": 0.27
+    },
+    {
+      "name": "promotion_recente",
+      "dtype": "int64",
+      "position": 32,
+      "type": "numeric",
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.75,
+      "std": 0.44
+    },
+    {
+      "name": "distance_longue",
+      "dtype": "int64",
+      "position": 33,
+      "type": "numeric",
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.22,
+      "std": 0.42
+    }
+  ]
+}

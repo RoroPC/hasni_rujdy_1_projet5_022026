@@ -191,6 +191,34 @@ cython_debug/
 # Ruff stuff:
 .ruff_cache/
 
+# Local deliverables and AI-assisted development files
+tmp/
+livrables/
+*.zip
+*.key
+*.pptx.inspect.ndjson
+P5_Fiche_autoevaluation_editable.pdf
+FICHE_DETAILLEE_SOUTENANCE_PROJET5.md
+.DS_Store
+
+.codex/
+.agents/
+.claude/
+.cursor/
+.windsurf/
+.roo/
+.continue/
+.aider*
+.vscode/
+.idea/
+AGENTS.md
+CLAUDE.md
+GEMINI.md
+.github/copilot-instructions.md
+
+# The project keeps this generated delivery report intentionally.
+!reports/coverage.xml
+
 # PyPI configuration file
 .pypirc
 
