@@ -20,19 +20,18 @@ Vérifiez que les trois tables contiennent le même nombre d'exemples.
 
 ## 2. Préparation de Hugging Face Spaces
 
-Le compte utilise le runtime Gradio gratuit. Trois Spaces publics isolent les versions :
+Le compte utilise le runtime Gradio gratuit. Deux Spaces publics isolent les versions distantes :
 
-- `RoroPC/turnover-prediction-api-dev` avec `ENVIRONMENT=dev`;
 - `RoroPC/turnover-prediction-api-staging` avec `ENVIRONMENT=staging`;
 - `RoroPC/turnover-prediction-api` avec `ENVIRONMENT=prod`.
 
-Chaque Space possède un Trusted Publisher GitHub Actions limité au dépôt `RoroPC/hasni_rujdy_1_projet5_022026`, à la branche correspondante et au workflow `ci-cd.yml`. L'identité OIDC produit un jeton court et limité au Space; aucun `HF_TOKEN` permanent n'est stocké dans GitHub.
+`dev` reste l'environnement de développement local et d'intégration continue. Chaque Space distant possède un Trusted Publisher GitHub Actions limité au dépôt `RoroPC/hasni_rujdy_1_projet5_022026`, à la branche correspondante et au workflow `ci-cd.yml`. L'identité OIDC produit un jeton court et limité au Space; aucun `HF_TOKEN` permanent n'est stocké dans GitHub.
 
 L'interface publique exécute le modèle sans persister les profils saisis. L'API FastAPI et la traçabilité PostgreSQL restent testables avec Docker Compose.
 
 ## 3. Configuration GitHub
 
-Créez les environnements GitHub `dev`, `staging` et `prod`. Dans chaque environnement, ajoutez `HF_SPACE_ID` et `HF_DEPLOY_ENABLED=true`. Configurez une approbation manuelle pour `prod`.
+Créez les environnements GitHub `dev`, `staging` et `prod`. `dev` exécute la CI sans déploiement cloud. Dans `staging` et `prod`, ajoutez `HF_SPACE_ID` et `HF_DEPLOY_ENABLED=true`. Configurez une approbation manuelle pour `prod`.
 
 Protégez `dev`, `staging` et `prod` : pull request obligatoire, job `quality` obligatoire, fusion interdite tant que les tests échouent.
 
@@ -44,7 +43,7 @@ Le workflow synchronise uniquement les fichiers nécessaires à l'interface apr�
 branche de fonctionnalité -> dev -> staging -> prod
 ```
 
-- `dev` : déploiement rapide d'intégration;
+- `dev` : développement local et intégration continue;
 - `staging` : démonstration et validation fonctionnelle;
 - `prod` : approbation manuelle et version taguée.
 
