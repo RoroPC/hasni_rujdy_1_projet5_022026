@@ -69,7 +69,7 @@ jobs:
     needs: quality
     if: >-
       github.event_name == 'push' &&
-      contains(fromJSON('["dev", "staging", "prod"]'), github.ref_name) &&
+      contains(fromJSON('["staging", "prod"]'), github.ref_name) &&
       vars.HF_DEPLOY_ENABLED == 'true'
     runs-on: ubuntu-latest
     environment: ${{ github.ref_name }}

@@ -26,7 +26,7 @@ Projet OpenClassrooms 5 réalisé par **Rujdy Hasni**. Démarrage : **février 2
 - Tests unitaires et fonctionnels : 138 tests validés, couverture globale 86,77 %.
 - Docker Compose et image Docker : fournis.
 - CI/CD `dev` / `staging` / `prod` : configuré.
-- Déploiement cloud : interface Gradio gratuite synchronisée séparément pour `dev`, `staging` et `prod`.
+- Déploiement cloud : interface Gradio gratuite synchronisée séparément pour `staging` et `prod`; `dev` reste local et couvert par la CI.
 
 ## Architecture
 
@@ -193,11 +193,11 @@ Le workflow [ci-cd.yml](.github/workflows/ci-cd.yml) s'exécute à chaque `push`
 3. initialisation d'un service PostgreSQL;
 4. tests et couverture minimale de 80 %;
 5. construction de l'image Docker;
-6. déploiement conditionnel vers un Space Hugging Face.
+6. déploiement conditionnel vers Hugging Face pour `staging` et `prod`.
 
 Les branches d'environnement sont :
 
-- `dev` : développement et intégration continue;
+- `dev` : développement local et intégration continue, sans ressource cloud;
 - `staging` : validation avant production;
 - `prod` : production, avec environnement GitHub protégé;
 
@@ -205,7 +205,7 @@ Activez les règles de protection GitHub sur `dev`, `staging` et `prod` afin d'e
 
 ### Secrets et variables GitHub
 
-Dans chacun des environnements `dev`, `staging` et `prod` :
+Dans les environnements `staging` et `prod` :
 
 - variable `HF_SPACE_ID` : identifiant du Space correspondant;
 - variable `HF_DEPLOY_ENABLED` : `true` pour autoriser le déploiement;
