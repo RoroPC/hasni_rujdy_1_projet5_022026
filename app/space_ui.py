@@ -4,6 +4,7 @@ import os
 from typing import Any
 
 import gradio as gr
+import spaces
 
 from app.api.schemas import EmployeeDataRequest
 from app.ml.predict import TurnoverPredictor
@@ -73,6 +74,7 @@ predictor = TurnoverPredictor(
 )
 
 
+@spaces.GPU
 def predict_for_space(*values: Any) -> tuple[str, dict[str, Any]]:
     """Valide le formulaire puis retourne une prédiction lisible et son détail."""
     payload = dict(zip(INPUT_NAMES, values, strict=True))
