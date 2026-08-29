@@ -1,8 +1,13 @@
 [project]
 name = "turnover-prediction-api"
 version = "1.0.0"
-description = "API de prédiction du turnover - TechNova Partners"
+description = "API de prediction du turnover - TechNova Partners"
+readme = "README.md"
 requires-python = ">=3.10,<3.12"
+license = "MIT"
+authors = [
+    {name = "TechNova Partners", email = "contact@technova.com"}
+]
 dependencies = [
     "pandas>=2.0.0",
     "numpy>=1.24.0",
@@ -28,3 +33,46 @@ dev = [
 [build-system]
 requires = ["setuptools>=68.0.0", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["app*"]
+exclude = ["tests*", "artifacts*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::UserWarning"
+]
+
+[tool.coverage.run]
+source = ["app"]
+omit = ["tests/*", "*/__pycache__/*"]
+
+[tool.coverage.report]
+fail_under = 80
+show_missing = true
+exclude_lines = [
+    "pragma: no cover",
+    "if __name__ == .__main__.:",
+    "raise NotImplementedError"
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
