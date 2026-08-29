@@ -1,0 +1,105 @@
+name: CI/CD
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Tests, couverture et image Docker
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: turnover_db
+          POSTGRES_USER: turnover
+          POSTGRES_PASSWORD: turnover-ci-password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U turnover -d turnover_db"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql://turnover:turnover-ci-password@localhost:5432/turnover_db
+      API_KEY: ""
+    steps:
+      - name: Recuperer le depot
+        uses: actions/checkout@v7
+
+      - name: Installer uv et Python
+        uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+        with:
+          python-version: "3.10"
+          enable-cache: true
+
+      - name: Installer les dependances verrouillees
+        run: uv sync --frozen --extra dev --extra space
+
+      - name: Verifier la qualite du code
+        run: uv run ruff check app tests scripts
+
+      - name: Initialiser PostgreSQL
+        run: uv run python scripts/create_db.py
+
+      - name: Executer les tests et la couverture
+        run: >-
+          uv run pytest
+          --cov=app
+          --cov-report=term-missing
+          --cov-report=xml:reports/coverage.xml
+          --cov-fail-under=80
+
+      - name: Construire l'image Docker
+        run: docker build --tag turnover-api:${{ github.sha }} .
+
+  deploy:
+    name: Deployer le Space ${{ github.ref_name }}
+    needs: quality
+    if: >-
+      github.event_name == 'push' &&
+      contains(fromJSON('["dev", "staging", "prod"]'), github.ref_name) &&
+      vars.HF_DEPLOY_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    environment: ${{ github.ref_name }}
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Recuperer le depot
+        uses: actions/checkout@v7
+
+      - name: Installer Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.10"
+
+      - name: Installer le client Hugging Face
+        run: python -m pip install --upgrade "huggingface_hub>=1.19.0"
+
+      - name: Synchroniser le Space de l'environnement
+        env:
+          HF_OIDC_RESOURCE: spaces/${{ vars.HF_SPACE_ID }}
+        run: >-
+          hf upload "${{ vars.HF_SPACE_ID }}" . .
+          --repo-type space
+          --include README.md
+          --include MODEL_CARD.md
+          --include app.py
+          --include requirements.txt
+          --include pyproject.toml
+          --include "app/**"
+          --include "artifacts/**"
+          --delete "*"
+          --commit-message "Deploy ${{ github.ref_name }} ${GITHUB_SHA::7}"
