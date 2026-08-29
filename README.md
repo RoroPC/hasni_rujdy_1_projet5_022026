@@ -3,13 +3,18 @@ title: Turnover Prediction API
 emoji: 📉
 colorFrom: blue
 colorTo: indigo
-sdk: docker
-app_port: 7860
+sdk: gradio
+sdk_version: 6.26.0
+python_version: 3.10
+app_file: app.py
+pinned: false
+license: mit
+short_description: Interface publique du modèle de prédiction du turnover
 ---
 
 # Déployez un modèle de Machine Learning
 
-API FastAPI de prédiction du risque de départ des employés, avec validation Pydantic, traçabilité PostgreSQL, tests Pytest, documentation OpenAPI et pipeline CI/CD vers Hugging Face Spaces.
+API FastAPI de prédiction du risque de départ des employés, complétée par une interface Gradio publique pour Hugging Face Spaces, avec validation Pydantic, traçabilité PostgreSQL, tests Pytest et pipeline CI/CD.
 
 Projet OpenClassrooms 5 réalisé par **Rujdy Hasni**. Démarrage : **février 2026**.
 
@@ -18,10 +23,10 @@ Projet OpenClassrooms 5 réalisé par **Rujdy Hasni**. Démarrage : **février 2
 - API et documentation Swagger/ReDoc : fonctionnelles.
 - Modèle Random Forest et preprocessing déterministe : fonctionnels.
 - PostgreSQL, script SQL, ORM, jeu d'exemples et script d'insertion : fonctionnels.
-- Tests unitaires et fonctionnels : 136 tests validés, couverture globale 82,90 %.
+- Tests unitaires et fonctionnels : 138 tests validés, couverture globale 86,77 %.
 - Docker Compose et image Docker : fournis.
 - CI/CD `dev` / `staging` / `prod` : configuré.
-- Déploiement cloud : automatisation prête; l'URL publique apparaît après configuration du Space et des secrets décrits plus bas.
+- Déploiement cloud : interface Gradio gratuite synchronisée séparément pour `dev`, `staging` et `prod`.
 
 ## Architecture
 
@@ -195,7 +200,6 @@ Les branches d'environnement sont :
 - `dev` : développement et intégration continue;
 - `staging` : validation avant production;
 - `prod` : production, avec environnement GitHub protégé;
-- `001-architecture-et-ci` : branche de fonctionnalité utilisée pour la réalisation.
 
 Activez les règles de protection GitHub sur `dev`, `staging` et `prod` afin d'exiger la réussite du job `quality` et une revue avant fusion.
 
@@ -203,10 +207,11 @@ Activez les règles de protection GitHub sur `dev`, `staging` et `prod` afin d'e
 
 Dans chacun des environnements `dev`, `staging` et `prod` :
 
-- secret `HF_TOKEN` : jeton Hugging Face à droits minimaux;
-- variable `HF_SPACE_ID` : `utilisateur/nom-du-space`;
-- variable `HF_DEPLOY_ENABLED` : `true` pour autoriser le job de déploiement;
-- secret applicatif `API_KEY` et `DATABASE_URL` : à définir dans le Space ou le fournisseur PostgreSQL, jamais dans Git.
+- variable `HF_SPACE_ID` : identifiant du Space correspondant;
+- variable `HF_DEPLOY_ENABLED` : `true` pour autoriser le déploiement;
+- publication sans secret permanent via un Trusted Publisher OIDC limité au dépôt, à la branche et au workflow.
+
+Les Spaces gratuits exécutent l'interface Gradio et le modèle sans enregistrer de données RH. L'API FastAPI et la traçabilité PostgreSQL restent disponibles avec Docker Compose.
 
 Les étapes complètes sont dans [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md).
 

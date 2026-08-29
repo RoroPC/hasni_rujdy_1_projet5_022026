@@ -45,7 +45,7 @@ jobs:
           enable-cache: true
 
       - name: Installer les dependances verrouillees
-        run: uv sync --frozen --extra dev
+        run: uv sync --frozen --extra dev --extra space
 
       - name: Verifier la qualite du code
         run: uv run ruff check app tests scripts
@@ -65,7 +65,7 @@ jobs:
         run: docker build --tag turnover-api:${{ github.sha }} .
 
   deploy:
-    name: Deployer sur Hugging Face Spaces
+    name: Deployer le Space ${{ github.ref_name }}
     needs: quality
     if: >-
       github.event_name == 'push' &&
@@ -73,14 +73,33 @@ jobs:
       vars.HF_DEPLOY_ENABLED == 'true'
     runs-on: ubuntu-latest
     environment: ${{ github.ref_name }}
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - name: Recuperer le depot
         uses: actions/checkout@v7
 
-      - name: Synchroniser le Space de l'environnement
-        uses: huggingface/hub-sync@v0.1.0
+      - name: Installer Python
+        uses: actions/setup-python@v6
         with:
-          github_repo_id: ${{ github.repository }}
-          huggingface_repo_id: ${{ vars.HF_SPACE_ID }}
-          hf_token: ${{ secrets.HF_TOKEN }}
-          space_sdk: docker
+          python-version: "3.10"
+
+      - name: Installer le client Hugging Face
+        run: python -m pip install --upgrade "huggingface_hub>=1.19.0"
+
+      - name: Synchroniser le Space de l'environnement
+        env:
+          HF_OIDC_RESOURCE: spaces/${{ vars.HF_SPACE_ID }}
+        run: >-
+          hf upload "${{ vars.HF_SPACE_ID }}" . .
+          --repo-type space
+          --include README.md
+          --include MODEL_CARD.md
+          --include app.py
+          --include requirements.txt
+          --include pyproject.toml
+          --include "app/**"
+          --include "artifacts/**"
+          --delete "*"
+          --commit-message "Deploy ${{ github.ref_name }} ${GITHUB_SHA::7}"

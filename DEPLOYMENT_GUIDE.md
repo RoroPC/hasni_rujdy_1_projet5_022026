@@ -20,31 +20,23 @@ Vérifiez que les trois tables contiennent le même nombre d'exemples.
 
 ## 2. Préparation de Hugging Face Spaces
 
-1. Créez un Space **public** de type **Docker**. Le Space de production prévu pour ce projet est `RoroPC/turnover-prediction-api`.
-2. Si plusieurs environnements cloud sont nécessaires, choisissez ensuite des noms distincts, par exemple `turnover-api-dev`, `turnover-api-staging` et `turnover-api-prod`.
-3. Ajoutez les variables/secrets du Space :
-   - `DATABASE_URL` : URL PostgreSQL du fournisseur choisi;
-   - `API_KEY` : clé longue et aléatoire;
-   - `CORS_ORIGINS` : origines autorisées;
-   - `ENVIRONMENT` : `dev`, `staging` ou `prod`.
-4. N'inscrivez jamais ces valeurs dans `.env.example`, le workflow ou le README.
+Le compte utilise le runtime Gradio gratuit. Trois Spaces publics isolent les versions :
 
-La disponibilité du SDK Docker dépend de l'offre et du matériel accessibles au compte Hugging Face. Si l'interface affiche Docker comme une option payante désactivée, ne choisissez pas Gradio comme remplacement automatique : le dépôt actuel expose une API FastAPI au moyen de son `Dockerfile`. Il faut soit activer une offre Docker avec l'accord du propriétaire, soit adapter explicitement l'application à un runtime Gradio.
+- `RoroPC/turnover-prediction-api-dev` avec `ENVIRONMENT=dev`;
+- `RoroPC/turnover-prediction-api-staging` avec `ENVIRONMENT=staging`;
+- `RoroPC/turnover-prediction-api` avec `ENVIRONMENT=prod`.
 
-L'interaction PostgreSQL peut rester locale pour la soutenance, conformément à la mission. Pour une API publique réellement persistante, fournissez un PostgreSQL accessible depuis le Space.
+Chaque Space possède un Trusted Publisher GitHub Actions limité au dépôt `RoroPC/hasni_rujdy_1_projet5_022026`, à la branche correspondante et au workflow `ci-cd.yml`. L'identité OIDC produit un jeton court et limité au Space; aucun `HF_TOKEN` permanent n'est stocké dans GitHub.
+
+L'interface publique exécute le modèle sans persister les profils saisis. L'API FastAPI et la traçabilité PostgreSQL restent testables avec Docker Compose.
 
 ## 3. Configuration GitHub
 
-Créez les environnements GitHub `dev`, `staging` et `prod`. Dans chaque environnement :
-
-- ajoutez le secret `HF_TOKEN`;
-- ajoutez la variable `HF_SPACE_ID` (`utilisateur/space`);
-- ajoutez la variable `HF_DEPLOY_ENABLED=true`;
-- configurez une approbation manuelle pour `prod`.
+Créez les environnements GitHub `dev`, `staging` et `prod`. Dans chaque environnement, ajoutez `HF_SPACE_ID` et `HF_DEPLOY_ENABLED=true`. Configurez une approbation manuelle pour `prod`.
 
 Protégez `dev`, `staging` et `prod` : pull request obligatoire, job `quality` obligatoire, fusion interdite tant que les tests échouent.
 
-Le workflow officiel synchronise le contenu vers Hugging Face après les tests. `.github/` et `.git/` ne sont pas copiés dans le Space.
+Le workflow synchronise uniquement les fichiers nécessaires à l'interface après les tests. Les fichiers GitHub, les tests, les rapports et les livrables locaux ne sont pas copiés dans le Space.
 
 ## 4. Promotion des versions
 
